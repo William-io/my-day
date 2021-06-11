@@ -1,14 +1,30 @@
-<h1>{{title}}</h1>
-<button (click)="changeText()">Change Text</button>
+<h1 class="title animated jackInTheBox">{{title}}</h1>
+<!-- <button (click)="changeText()">Change Text</button> -->
 <ul>
+    <p *ngIf="tasks.length==0"><small>Wondering where your tasks are?</small></p>
     <li *ngFor="let task of tasks">
-        {{task.id}}. {{task.title}} |
-        <!-- <div>
-            <textarea>{{task.description}}</textarea>
-        </div> -->
-        <button>Remove</button> | <button>Conclude</button>
+        {{task.title}} |
+        <button *ngIf="task.done" (click)="maskAsUndone(task)">Redo</button> |
+        <button *ngIf="!task.done" (click)="markAsConclude(task)">Conclude</button>
+        <button (click)="remove(task)">Remove</button>
         <!-- <input type="checkbox" id="scales" name="scales">
-        <label for="scales">Conclude</label> -->
+        <label for="scales" >Conclude</label> -->
     </li>
 
+
+    <div>
+        <form [formGroup]="form">
+            <fieldset>
+                <label>Add task to my Day: </label>
+                <input type="text" placeholder=" + Add a task" maxlength="60" formControlName="title">
+                <small class="danger" *ngIf="form.controls.title.invalid && !form.controls.title.pristine"> This field
+                    contain between
+                    3 and 60 characters </small>
+                <p class="text-center">
+                    <button [disabled]="form.invalid" (click)="add()" class="button"><i class="far fa-save"></i>
+                        Save</button>
+                </p>
+            </fieldset>
+        </form>
+    </div>
 </ul>
